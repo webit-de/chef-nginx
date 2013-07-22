@@ -1,0 +1,63 @@
+user <%= node[:nginx][:user] %>;
+worker_processes  <%= node['nginx']['worker_processes'] %>;
+<% if node['nginx']['worker_rlimit_nofile'] -%>
+worker_rlimit_nofile <%= node['nginx']['worker_rlimit_nofile'] %>;
+<% end -%>
+
+error_log  /var/log/nginx/error.log;
+pid        /var/run/nginx.pid;
+
+events {
+  worker_connections  <%= node['nginx']['worker_connections'] %>;
+<% if node['nginx']['multi_accept'] -%>
+  multi_accept on;
+<% end -%>
+<% if node['nginx']['event'] -%>
+  use <%= node['nginx']['event'] %>;
+<% end -%>
+}
+
+http {
+
+  include       /etc/nginx/mime.types;
+  default_type  application/octet-stream;
+
+  <% unless node['nginx']['disable_access_log'] -%>
+  access_log	/var/log/nginx/access.log;
+  <% end %>
+
+  sendfile <%= node['nginx']['sendfile'] %>;
+  tcp_nopush <%= node['nginx']['tcp_nopush'] %>;
+  tcp_nodelay <%= node['nginx']['tcp_nodelay'] %>;
+
+  <% if node['nginx']['keepalive'] == "on" %>
+  keepalive_timeout  <%= node['nginx']['keepalive_timeout'] %>;
+  <% end %>
+
+  gzip  <%= node['nginx']['gzip'] %>;
+  <% if node['nginx']['gzip'] == "on" %>
+  gzip_http_version <%= node['nginx']['gzip_http_version'] %>;
+  gzip_comp_level <%= node['nginx']['gzip_comp_level'] %>;
+  gzip_proxied <%= node['nginx']['gzip_proxied'] %>;
+  gzip_vary <%= node['nginx']['gzip_vary'] %>;
+  <% if node['nginx']['gzip_buffers'] -%>
+  gzip_buffers <%= node['nginx']['gzip_buffers'] %>;
+  <% end -%>
+  gzip_types <%= node['nginx']['gzip_types'].join(' ') %>;
+  gzip_min_length  1000;
+  gzip_disable     "MSIE [1-6]\.";
+  <% end %>
+
+  server_names_hash_bucket_size <%= node['nginx']['server_names_hash_bucket_size'] %>;
+  types_hash_max_size <%= node['nginx']['types_hash_max_size'] %>;
+  types_hash_bucket_size <%= node['nginx']['types_hash_bucket_size'] %>;
+  <% if node['nginx']['client_max_body_size'] -%>
+  client_max_body_size <%= node['nginx']['client_max_body_size'] %>;
+  <% end -%>
+  <% if node['nginx']['client_body_buffer_size'] -%>
+    client_body_buffer_size    <%= node['nginx']['client_body_buffer_size'] %>;
+  <% end %>
+
+  include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/sites-enabled/*;
+}
