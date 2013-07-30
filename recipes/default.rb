@@ -7,7 +7,7 @@ include_recipe 'apt'
 
 apt_repository "nginx" do
   uri "http://nginx.org/packages/#{node[:platform]}/"
-  version_name = value_for_platform(
+  version_name = node[:os_version_name] || value_for_platform(
     "ubuntu" => { "12.04" => "precise" },
     "debian" => { "squeeze" => "squeeze", "wheezy" => "wheezy" }
   )
