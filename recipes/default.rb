@@ -25,6 +25,11 @@ template '/etc/nginx/nginx.conf' do
   notifies :reload, 'service[nginx]'
 end
 
+template '/etc/nginx/mime.types' do
+  source 'mime.types'
+  notifies :reload, 'service[nginx]'
+end
+
 directory '/etc/nginx/sites-available'
 directory '/etc/nginx/sites-enabled'
 directory '/etc/nginx/ssl'
