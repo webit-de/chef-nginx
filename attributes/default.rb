@@ -38,7 +38,7 @@ default['nginx']['disable_access_log'] = false
 default['nginx']['types_hash_max_size'] = 2048
 default['nginx']['types_hash_bucket_size'] = 64
 default['nginx']['proxy_read_timeout'] = 60
-default['nginx']['client_max_body_size'] = '100m'
+default['nginx']['client_max_body_size'] = '1000m'
 default['nginx']['client_body_buffer_size'] = '128k'
 
 
