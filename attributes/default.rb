@@ -1,5 +1,18 @@
 default[:nginx][:user] = 'nginx'
 default['nginx']['dir'] = '/etc/nginx'
+
+# ssl / tls
+default[:nginx][:ssl] = false
+default[:nginx][:ssl_protocols] = 'TLSv1 TLSv1.1 TLSv1.2'
+default[:nginx][:ssl_prefer_server_ciphers] = 'on'
+default[:nginx][:ssl_ciphers] = 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AES:RSA+3DES:!ADH:!AECDH:!MD5:!DSS'
+default[:nginx][:ssl_session_cache] = 'shared:SSL:10m'
+
+# stapling support
+default[:nginx][:ssl_stapling] = 'on'
+default[:nginx][:ssl_stapling_verify] = 'off'
+default[:nginx][:ssl_trusted_certificate] = nil
+
 default[:nginx][:worker_processes] = 1
 default['nginx']['worker_rlimit_nofile'] = nil
 

@@ -44,6 +44,12 @@ template "/etc/nginx/conf.d/proxy.conf" do
   notifies :reload, 'service[nginx]'
 end
 
+template "/etc/nginx/conf.d/ssl.conf" do
+  source "ssl.conf.erb"
+  not_if { 'true' != node[:nginx][:ssl]}
+  notifies :reload, 'service[nginx]'
+end
+
 cookbook_file '/etc/nginx/conf.d/default.conf' do
   action :delete
 end

@@ -1,0 +1,17 @@
+<% if 'true' == node[:nginx][:ssl] %>
+ssl_protocols <%= node[:nginx][:ssl_protocols] %>;
+ssl_prefer_server_ciphers <%= node[:nginx][:ssl_prefer_server_ciphers] %>;
+ssl_ciphers <%= node[:nginx][:ssl_ciphers] %>;
+
+ssl_session_cache <%= node[:nginx][:ssl_session_cache] %>;
+
+<% if 'on' == node[:nginx][:ssl_stapling] %>
+ssl_stapling on;
+ssl_stapling_verify <%= node[:nginx][:ssl_stapling_verify] %>;
+<% end %>
+
+<% if node[:nginx][:ssl_trusted_certificate] %>
+ssl_trusted_certificate <%= node[:nginx][:ssl_trusted_certificate] %>;
+<% end %>
+
+<% end %>
